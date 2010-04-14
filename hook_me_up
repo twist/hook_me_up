@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+
+
+use strict;
+use warnings;
+
+main();
+
+
+sub main
+{
+
+	my $init = 0;
+	my $repo_only = 0;
+
+	for(my $i = 0; $i < @ARGV; $i++)
+	{
+		if ($ARGV[$i] =~ "--init")
+		{
+			$init = 1;
+		}
+		if ($ARGV[$i] =~ "--repositorie-only")
+		{
+			$repo_only = 1;
+		}
+	}
+
+
+
+
+
+
+	if ($init == 1)
+	{
+		init_repository($repo_only);
+	}
+		
+
+}
+
+
+
+
+
+sub init_repository
+{
+	print "INIT";
+
+
+}
+
