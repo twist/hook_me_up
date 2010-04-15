@@ -4,6 +4,13 @@
 use strict;
 use warnings;
 
+use File::Find;
+use File::Copy;
+
+my $hook_dir = "/home/twist/bin/githooks";
+my @found_hooks;
+my @hooks = ("pre-commit", "post-commit");
+
 main();
 
 
@@ -45,7 +52,36 @@ sub main
 sub init_repository
 {
 	print "INIT";
-
+        get_all_hooks();
+        foreach my $hook (@found_hooks)
+        {
+                copy($hook, ".git/hooks/");
+        }
+        foreach my $hook (@hooks)
+        {
+                chmod(0744, ".git/hooks/$hook");
+        }
 
 }
 
+
+sub get_all_hooks
+{
+     print   find(\&wanted, $hook_dir);        
+
+}
+
+
+sub wanted
+{
+        /\.git/ and $File::Find::prune = 1;
+        foreach my $hook (@hooks)
+        {
+                if ($_ =~ /$hook/)
+                {
+                        push(@found_hooks, $File::Find::name);
+                }
+        }
+
+
+}
