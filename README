@@ -1,0 +1,18 @@
+
+        hook me up 0.1
+        --------------
+
+        git hook management made easy.
+
+        USAGE
+        -----
+
+        always call hook_me_up in the root of your repository
+
+
+
+
+        OPTIONS
+        -------
+
+        --init #copies all found hooks in $hook_dir into the current repository,
