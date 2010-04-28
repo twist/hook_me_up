@@ -40,7 +40,6 @@ sub main
 	if ($init == 1)
 	{
 		hook_menu();
-		init_repository($repo_only);
 	}
 		
 
@@ -60,14 +59,32 @@ sub hook_menu
 		my $i = 1;
 		foreach my $hook (@hooks)
 		{
-			print $i++." ".$hook->{"HMU_NAME"}."-".$hook->{"HMU_DESCR"}."\n";
+			print $hook->{"mark"}." ".$i++.". ".$hook->{"HMU_NAME"}." - ".$hook->{"HMU_DESCR"}."\n";
 		}
 		print "\n***commands***\n";
 		print " a) use all hooks\n";
 		print " m) use marked hooks\n";
-		print " 1-$i) mark hook\n";
+		print " 1-$i) mark/unmark hook\n";
+		print " q) quit\n";
 		print " \n";
-		last;
+		my $command = <STDIN>;
+		if ($command =~ /a/)
+		{
+			init_repository();
+			print "all found hooks are now in your .git/hooks directory\n";
+			last;
+		}
+		elsif ($command =~ /\d/)
+		{
+			@hooks[$command-1]->{"mark"} = "*";
+		}
+		elsif ($command =~ /q/)
+		{
+			last;
+		}
+		elsif ($command =~ /a/)
+		{
+		}
 	}
 
 }
@@ -83,6 +100,7 @@ sub parse_hook
 	$hook_data->{"HMU_NAME"} = $hook;
 	$hook_data->{"path"} = $hook;
 	$hook_data->{"HMU_DESCR"} = "no description given";
+	$hook_data->{"mark"} = " ";
 
 	while ( my $line = <FILE>)
 	{
