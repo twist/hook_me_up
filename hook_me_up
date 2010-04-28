@@ -39,6 +39,7 @@ sub main
 
 	if ($init == 1)
 	{
+		hook_menu();
 		init_repository($repo_only);
 	}
 		
@@ -48,11 +49,51 @@ sub main
 
 
 
+sub hook_menu
+{
+
+        get_all_hooks();
+	print "i found the following hooks:\n----------------------------\n";
+	my $i = 1;
+	my @hooks = @found_hooks;
+	my @hooks_with_info;
+	foreach my $hook (@hooks)
+	{
+		my $hook_data = parse_hook($hook);
+		push(@hooks_with_info,$hook_data) ;
+
+	}
+
+}
+
+sub parse_hook
+{
+	my ($hook) = @_;
+	
+	open FILE, ($hook) or die "ADASSD";
+	my $hook_data = {};
+
+	#defaults
+	$hook_data->{"HMU_NAME"} = $hook;
+	$hook_data->{"HMU_DESCR"} = "no description given";
+
+	while ( my $line = <FILE>)
+	{
+		if ($line =~ /HMU_NAME: (.*)$/)
+		{
+			$hook_data->{"HMU_NAME"} = $1;
+		}
+		if ($line =~ /HMU_DESCR: (.*)$/)
+		{
+			$hook_data->{"HMU_DESCR"} = $1;
+		}
+	}
+	close FILE;
+	return $hook_data;
+}
 
 sub init_repository
 {
-	print "INIT";
-        get_all_hooks();
         foreach my $hook (@found_hooks)
         {
                 copy($hook, ".git/hooks/");
@@ -67,7 +108,7 @@ sub init_repository
 
 sub get_all_hooks
 {
-     print   find(\&wanted, $hook_dir);        
+     find(\&wanted, $hook_dir);  
 
 }
 
