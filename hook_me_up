@@ -52,16 +52,22 @@ sub main
 sub hook_menu
 {
 
-        get_all_hooks();
-	print "i found the following hooks:\n----------------------------\n";
-	my $i = 1;
-	my @hooks = @found_hooks;
-	my @hooks_with_info;
-	foreach my $hook (@hooks)
+        @hooks = get_all_hooks();
+	#menue loop
+	while (1)
 	{
-		my $hook_data = parse_hook($hook);
-		push(@hooks_with_info,$hook_data) ;
-
+		print "\ni found the following hooks: \n\n";
+		my $i = 1;
+		foreach my $hook (@hooks)
+		{
+			print $i++." ".$hook->{"HMU_NAME"}."-".$hook->{"HMU_DESCR"}."\n";
+		}
+		print "\n***commands***\n";
+		print " a) use all hooks\n";
+		print " m) use marked hooks\n";
+		print " 1-$i) mark hook\n";
+		print " \n";
+		last;
 	}
 
 }
@@ -75,6 +81,7 @@ sub parse_hook
 
 	#defaults
 	$hook_data->{"HMU_NAME"} = $hook;
+	$hook_data->{"path"} = $hook;
 	$hook_data->{"HMU_DESCR"} = "no description given";
 
 	while ( my $line = <FILE>)
@@ -108,7 +115,14 @@ sub init_repository
 
 sub get_all_hooks
 {
-     find(\&wanted, $hook_dir);  
+     	find(\&wanted, $hook_dir);  
+	my @hooks;
+     	foreach my $hook (@found_hooks)
+     	{
+		push(@hooks, parse_hook($hook));
+	}
+
+	return @hooks
 
 }
 
