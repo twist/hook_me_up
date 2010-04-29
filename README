@@ -12,7 +12,7 @@
 
 
 
-        OPTIONS
+        OPTIONS 
         -------
 
         --init #copies all found hooks in $hook_dir into the current repository,

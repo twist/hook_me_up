@@ -64,7 +64,7 @@ sub hook_menu
 		print "\n***commands***\n";
 		print " a) use all hooks\n";
 		print " m) use marked hooks\n";
-		print " 1-$i) mark/unmark hook\n";
+		print " 1-".($i-1)." mark/unmark hook\n";
 		print " q) quit\n";
 		print " \n";
 		my $command = <STDIN>;
