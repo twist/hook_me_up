@@ -7,7 +7,7 @@ use warnings;
 use File::Find;
 use File::Copy;
 
-my $hook_dir = "/home/twist/bin/githooks";
+my $hook_dir = "/home/twist/projects/githooks";
 my @found_hooks;
 my @hooks = ("pre-commit", "post-commit");
 
