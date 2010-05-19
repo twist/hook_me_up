@@ -9,7 +9,7 @@ use File::Copy;
 
 my $hook_dir = "/home/twist/projects/githooks";
 my @found_hooks;
-my @hooks = ("pre-commit", "post-commit");
+my @hooks = ("prepare-commit-msg","pre-commit", "post-commit");
 
 main();
 
