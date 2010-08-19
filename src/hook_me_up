@@ -7,7 +7,7 @@ use warnings;
 use File::Find;
 use File::Copy;
 
-my $hook_dir = "/home/twist/projects/githooks";
+my $hook_dir = "";
 my @found_hooks;
 my @hooks = ("prepare-commit-msg","pre-commit", "post-commit");
 
@@ -30,7 +30,18 @@ sub main
 		{
 			$repo_only = 1;
 		}
+                if($ARGV[$i] =~ "--hook-dir")
+                {
+                        $hook_dir = $ARGV[$i+1];
+                        $i += 1;
+                }
+
 	}
+        if($hook_dir eq "")
+        {
+                print "please give me a directory where to look for githooks, use --hook-dir /path/to/dir\n";
+                exit 1;
+        }
 
 
 
@@ -76,7 +87,7 @@ sub hook_menu
 		}
 		elsif ($command =~ /\d/)
 		{
-			@hooks[$command-1]->{"mark"} = "*";
+			$hooks[$command-1]->{"mark"} = "*";
 		}
 		elsif ($command =~ /q/)
 		{
